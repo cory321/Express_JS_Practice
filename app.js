@@ -1,17 +1,43 @@
+//boilerplate code
+
 var express = require('express');
-var fs = require("fs");
-var app = express();
 
-var file = fs.readFileSync('test.txt', 'utf-8');
 
+//set view engine to ejs
 app.set('view engine', 'ejs');
 
-app.get('/', function(request, response){
-	response.render('index', file);
+var vegetables = [
+	"carrots",
+	"onions",
+	"tomatoes",
+	"lettuce"
+];
+
+//GET Request to '/' runs the function below
+
+app.get('/', function(req, res) {
+	//This will print hello
+	res.render('index', {veggies: vegetables});
 });
 
-app.listen(3000, function(){
-	console.log("Server on 3000");
+app.get('/hey', function(req,res){
+	res.send(vegetables.join(", "));
 });
 
-	
+app.get('/hey/:name', function(req, res){
+	res.send('Hey ' + req.params.name);
+});
+
+// GET request with Query
+
+app.get('/hi', function(req, res){
+	var name = req.query.name;
+	res.send("Hey, " + name);
+});
+
+
+//start server
+
+app.listen(3000, function() {
+	console.log("server running on port 3000");
+});
